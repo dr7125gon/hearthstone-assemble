@@ -41,7 +41,7 @@
 .playcard .slab.imported{border:3px solid #f3c36e;box-shadow:0 0 0 2px #604822,0 0 20px #e2aa4b44}
 .playcard .slab.imported:before{content:'↔';position:absolute;right:-10px;top:42%;font-size:18px;color:#ffe1a0;text-shadow:0 2px 5px #000}
 .playcard .slab{transition:background .12s,border-color .12s}
- .playcard .slab.slab-blocked{cursor:not-allowed;opacity:.48;border-style:dashed;touch-action:pan-y}
+ .playcard .slab.slab-blocked{cursor:not-allowed;opacity:.48;border-style:dashed;touch-action:pan-y;pointer-events:none}
 </style><style>
 /* V22: keep the two main navigation actions visible and easy to reach */
 #game .toolbar{top:0;padding:13px 12px;margin:0 -12px 16px;border:1px solid #7e648d;border-radius:0 0 13px 13px;background:#21192cf5;box-shadow:0 7px 22px #0009;gap:10px;align-items:stretch}
@@ -115,7 +115,7 @@ function cardMarkup(c,idx){
    const from=imported?sides[origin].name:'';
    const usedOnSide=!center&&assignments[slot]===side;
    const blocked=!center&&assignments[slot==='a'?'b':'a']!==null;
-   return `<div class="slab ${imported?'imported':usedOnSide?'source-in-use':''} ${blocked?'slab-blocked':''}" data-slot="${slot}" data-side="${center?'center':side}" onpointerdown="slabDown(event)" onpointermove="slabMove(event)" onpointerup="slabUp(event)" onpointercancel="slabCancel(event)">
+   return `<div class="slab ${imported?'imported':usedOnSide?'source-in-use':''} ${blocked?'slab-blocked':''}" data-slot="${slot}" data-side="${center?'center':side}" draggable="false" aria-disabled="${blocked?'true':'false'}" onpointerdown="slabDown(event)" onpointermove="slabMove(event)" onpointerup="slabUp(event)" onpointercancel="slabCancel(event)">
       <div class="slab-head"><span>${label}效果</span>${imported?`<span class="origin-tag">↩ ${escapeHtml(from)} · 可拖回</span>`:center?'<span class="origin-tag base">主體原有效果</span>':blocked?'<span class="origin-tag">需保留主體另一段 · 禁止拖曳</span>':usedOnSide?'<span class="origin-tag">已放入中央 ✓</span>':'<span class="origin-tag">拖至中央 →</span>'}</div>
       <div class="slab-value">${escapeHtml(val)}</div>
       ${imported?`<div class="slab-original">原本：${escapeHtml(original)}</div>`:''}
